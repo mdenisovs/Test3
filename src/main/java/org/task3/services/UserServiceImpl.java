@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ import org.task3.dtos.UserRequestDto;
 import org.task3.dtos.UserResponseDto;
 import org.task3.dtos.converters.UserConverter;
 import org.task3.infrastructure.repositories.UserRepository;
-
+import org.springframework.data.domain.Page;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.task3.dtos.constants.Formatter.formatter;
 
 @Service
 @Slf4j
@@ -104,8 +107,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> getAll() {
-        return repository.findAll().stream()
+    public List<UserResponseDto> getAll(Integer pageSize, Integer pageNum, String birthday, String name, String surname) {
+        var pageable = pageSize != null && pageNum != null ? Pageable.ofSize(pageSize).withPage(pageNum) : Pageable.unpaged();
+
+        var birthDate = birthday != null ? LocalDate.parse(birthday, formatter) : null;
+        return repository.getFiltered(name, surname, birthDate, pageable).stream()
                 .map(it -> UserConverter.convert(it, modelMapper))
                 .collect(Collectors.toList());
     }

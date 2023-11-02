@@ -15,7 +15,10 @@ import org.task3.infrastructure.repositories.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -79,7 +82,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public ResponseEntity<List<SubscriptionResponseDto>> getAll() {
-        return new ResponseEntity<>(repository.findAll().stream()
+        return new ResponseEntity<>(
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(repository.findAll().iterator(),
+                                Spliterator.ORDERED), false)
                 .map(it -> SubscriptionConverter.convert(it, modelMapper))
                 .collect(Collectors.toList()), HttpStatus.OK);
     }

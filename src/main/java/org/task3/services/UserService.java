@@ -13,5 +13,5 @@ public interface UserService {
 
     ResponseEntity<UserResponseDto> get(Long id);
 
-    List<UserResponseDto> getAll();
+    List<UserResponseDto> getAll(Integer pageSize, Integer pageNum, String birthday, String name, String surname);
 }

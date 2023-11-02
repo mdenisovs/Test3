@@ -41,7 +41,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserResponseDto>> getAll() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<UserResponseDto>> getAll(@RequestParam(name = "pageSize", required = false) Integer pageSize,
+                                                        @RequestParam(name = "pageNum", required = false) Integer pageNum,
+                                                        @RequestParam(name = "birthday", required = false) String birthday,
+                                                        @RequestParam(name = "name", required = false) String name,
+                                                        @RequestParam(name = "surname", required = false)String surname) {
+        return new ResponseEntity<>(userService.getAll(pageSize, pageNum, birthday, name, surname), HttpStatus.OK);
     }
 }
