@@ -47,7 +47,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscription.setStartDate(LocalDate.now().plusDays(1));
         repository.save(subscription);
         log.info("{} saved for {}", subscription, user);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
@@ -87,5 +87,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                                 Spliterator.ORDERED), false)
                 .map(it -> SubscriptionConverter.convert(it, modelMapper))
                 .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> delete(Long id) {
+        repository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

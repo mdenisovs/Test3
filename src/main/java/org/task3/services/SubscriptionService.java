@@ -12,4 +12,5 @@ public interface SubscriptionService {
     ResponseEntity<Void> update(SubscriptionRequestDto request);
     ResponseEntity<SubscriptionResponseDto> get(Long id);
     ResponseEntity<List<SubscriptionResponseDto>> getAll();
+    ResponseEntity<Void> delete(Long id);
 }

@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         var user = UserConverter.convert(request, modelMapper);
         repository.save(user);
         log.info("{} user saved", request);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
